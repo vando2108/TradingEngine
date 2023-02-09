@@ -9,7 +9,7 @@
 
 #include "../socket/socket.h"
 #include "../thread/thread.h"
-#include "../../include/util/pair-hash.h"
+#include "../../include/util/util.h"
 
 // Internal include
 #include "./enum.h"

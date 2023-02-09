@@ -4,9 +4,10 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+#include "../../include/util/util.h"
+
 #include "../../include/socket/client.h"
 #include "../../include/socket/sock-opt.h"
-#include "../../include/util/param-check.h"
 
 namespace Socket {
   CStreamClient::CStreamClient(): m_sockfd(-1) {}

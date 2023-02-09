@@ -6,7 +6,6 @@
 
 #include "../../include/util/util.h"
 #include "../../include/http/http-server.h"
-#include "../../include/util/param-check.h"
 
 namespace Http {
   /*

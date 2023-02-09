@@ -15,3 +15,30 @@ cc_library(
   hdrs = glob(["include/thread/*.h"]),
   deps = [":util", ":queue"]
 )
+
+cc_library(
+  name = "socket",
+  srcs = glob(["src/socket/*.cpp"]),
+  hdrs = glob(["include/socket/*.h"]),
+  deps = [":util"]
+)
+
+cc_library(
+  name = "event",
+  srcs = glob(["src/event/*.cpp"]),
+  hdrs = glob(["include/event/*.h"]),
+  deps = [":util", ":thread", ":socket"]
+)
+
+cc_library(
+  name = "http",
+  srcs = glob(["src/http/*.cpp"]),
+  hdrs = glob(["include/http/*.h"]),
+  deps = [":util", ":event", ":socket"]
+)
+
+cc_binary(
+  name = "main",
+  srcs = ["src/main.cpp"],
+  deps = [":util", ":queue", ":thread", ":socket", ":event", ":http"]
+)
