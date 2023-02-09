@@ -1,8 +1,9 @@
 // Copyright [2023] <Kdimo>
 #include <pthread.h>
 
-#include "../../include/log/log.h"
 #include "../../include/thread/thread.h"
+
+#include "../../include/util/util.h"
 
 namespace Thread {
   CThreadpool::CThreadpool(size_t thread_size, size_t task_size):
