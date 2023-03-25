@@ -13,7 +13,7 @@ class Limit {
   friend class LimitTree;
  public:
   explicit Limit(uint64_t limit_price)
-    : height_(0), limit_price_(limit_price), total_volume_(0),
+    : height_(1), limit_price_(limit_price), total_volume_(0),
     left_child_(nullptr), right_child_(nullptr) {}
     // m_head_order(nullptr), m_tail_order(nullptr) {}
 

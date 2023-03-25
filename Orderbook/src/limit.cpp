@@ -2,6 +2,7 @@
 #ifndef ORDERBOOK_SRC_LIMIT_H_
 #define ORDERBOOK_SRC_LIMIT_H_
 
+#include <cstdio>
 #include <memory>
 #include <algorithm>
 #include <inttypes.h>
@@ -32,9 +33,7 @@ void LimitTree::insert(std::shared_ptr<Limit>& root, uint64_t limit_price) {
     return;
   }
 
-  root->height_ = 1 + std::max(height(root->left_child_),
-      height(root->right_child_));
-
+  update_height(root);
   int balance = get_balance(root);
 
   if (balance > 1 && limit_price < root->left_child_->limit_price_) {
@@ -90,7 +89,7 @@ void LimitTree::left_rotate(std::shared_ptr<Limit>& x) {
   std::shared_ptr<Limit> y = x->right_child_;
   std::shared_ptr<Limit> T2 = y->left_child_;
 
-  x->left_child_ = x;
+  y->left_child_ = x;
   x->right_child_ = T2;
 
   update_height(x);
