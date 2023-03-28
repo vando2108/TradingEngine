@@ -4,18 +4,17 @@
 
 #include <cstdint>
 #include <memory>
+#include <unordered_map>
 
-#include "../include/order.hpp"
+#include "./order/orderbook_entry.hpp"
 
 namespace Orderbook {
-namespace Limit {
+
 class Limit {
   friend class LimitTree;
+  friend class Orderbook;
  public:
-  explicit Limit(uint64_t limit_price)
-    : height_(1), limit_price_(limit_price), total_volume_(0),
-    left_child_(nullptr), right_child_(nullptr) {}
-    // m_head_order(nullptr), m_tail_order(nullptr) {}
+  explicit Limit(const std::shared_ptr<OrderbookEntry>&);
 
  protected:
   uint8_t height_;
@@ -24,6 +23,7 @@ class Limit {
   std::weak_ptr<Limit> parent_;
   std::shared_ptr<Limit> left_child_;
   std::shared_ptr<Limit> right_child_;
+  ListOrderbookEntry list_orderbook_entry_;
 };
 
 class LimitTree {
@@ -31,11 +31,11 @@ class LimitTree {
   LimitTree();
   ~LimitTree();
  public:
-  void Insert(uint64_t);
+  void Insert(const std::shared_ptr<OrderbookEntry>&);
   void Traverse();
 
  private:
-  void insert(std::shared_ptr<Limit>&, uint64_t);
+  void insert(std::shared_ptr<Limit>&, const std::shared_ptr<OrderbookEntry>&);
   void traverse(std::shared_ptr<Limit>);
 
   uint8_t height(std::shared_ptr<Limit>);
@@ -46,8 +46,9 @@ class LimitTree {
 
  private:
   std::shared_ptr<Limit> root_;
+  std::unordered_map<uint64_t, std::shared_ptr<Limit>> limit_map_;
 };
-}  // namespace Limit
+
 }  // namespace Orderbook
 
 #endif

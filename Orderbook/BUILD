@@ -5,7 +5,7 @@ cc_library(
 
 cc_library(
   name = "include",
-  hdrs = glob(["include/*.hpp"]),
+  hdrs = glob(["include/*.hpp", "include/order/*.hpp"]),
   srcs = glob(["src/*.cpp"]),
   deps = [":util", "@com_github_google_glog//:glog"]
 )

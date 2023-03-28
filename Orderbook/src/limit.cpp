@@ -10,25 +10,33 @@
 #include "../include/limit.hpp"
 
 namespace Orderbook {
-namespace Limit {
+
+Limit::Limit(const std::shared_ptr<OrderbookEntry>& entry)
+  : height_(1), limit_price_(entry->order()->limit()),
+    total_volume_(entry->order()->quantity()) {
+    list_orderbook_entry_.AddOrder(entry);
+  }
 
 LimitTree::LimitTree() {}
 LimitTree::~LimitTree() {}
 
-void LimitTree::Insert(uint64_t limit_price) {
-  insert(root_, limit_price);
+void LimitTree::Insert(const std::shared_ptr<OrderbookEntry>& order) {
+  insert(root_, order);
 }
 
-void LimitTree::insert(std::shared_ptr<Limit>& root, uint64_t limit_price) {
+void LimitTree::insert(std::shared_ptr<Limit>& root,
+    const std::shared_ptr<OrderbookEntry>& entry) {
   if (root == nullptr) {
-    root = std::make_shared<Limit>(limit_price);
+    root = std::make_shared<Limit>(entry);
+    limit_map_[entry->order()->limit()] = root;
+
     return;
   }
 
-  if (limit_price < root->limit_price_) {
-    insert(root->left_child_, limit_price);
-  } else if (limit_price > root->limit_price_) {
-    insert(root->right_child_, limit_price);
+  if (entry->order()->limit() < root->limit_price_) {
+    insert(root->left_child_, entry);
+  } else if (entry->order()->limit() > root->limit_price_) {
+    insert(root->right_child_, entry);
   } else {
     return;
   }
@@ -36,23 +44,27 @@ void LimitTree::insert(std::shared_ptr<Limit>& root, uint64_t limit_price) {
   update_height(root);
   int balance = get_balance(root);
 
-  if (balance > 1 && limit_price < root->left_child_->limit_price_) {
+  if (balance > 1 && entry->order()->limit()
+      < root->left_child_->limit_price_) {
     right_rotate(root);
     return;
   }
 
-  if (balance < -1 && limit_price > root->right_child_->limit_price_) {
+  if (balance < -1 && entry->order()->limit()
+      > root->right_child_->limit_price_) {
     left_rotate(root);
     return;
   }
 
-  if (balance > 1 && limit_price > root->left_child_->limit_price_) {
+  if (balance > 1 && entry->order()->limit()
+      > root->left_child_->limit_price_) {
     left_rotate(root->left_child_);
     right_rotate(root);
     return;
   }
 
-  if (balance < -1 && limit_price < root->right_child_->limit_price_) {
+  if (balance < -1 && entry->order()->limit()
+      < root->right_child_->limit_price_) {
     right_rotate(root->right_child_);
     left_rotate(root);
     return;
@@ -116,7 +128,6 @@ void LimitTree::update_height(std::shared_ptr<Limit> root) {
       height(root->right_child_)) + 1;
 }
 
-}  // namespace Limit
 }  // namespace Orderbook
 
 #endif
