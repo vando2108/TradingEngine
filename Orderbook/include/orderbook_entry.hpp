@@ -17,6 +17,7 @@ class OrderbookEntry {
 
  public:
   explicit OrderbookEntry(const std::shared_ptr<LimitOrder>&);
+  ~OrderbookEntry();
 
  public:
   inline const std::shared_ptr<LimitOrder>& order() {

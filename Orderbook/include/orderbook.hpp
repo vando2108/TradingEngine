@@ -3,7 +3,7 @@
 #define ORDERBOOK_INCLUDE_ORDERBOOK_H_
 
 #include "./limit.hpp"
-#include "./order/limit_order.hpp"
+#include "./limit_order.hpp"
 
 #include <memory>
 #include <algorithm>
@@ -30,15 +30,12 @@ class Orderbook {
     return match_quantity;
   }
 
-  inline uint64_t gen_id() {
-    return index_++;
-  }
-
   MatchingResult limit(const std::shared_ptr<LimitOrder>& order);
+  MatchingResult match_limit_order(const std::shared_ptr<Limit>&,
+      const std::shared_ptr<LimitOrder>&,
+      std::function<bool(uint64_t, uint64_t)>);
 
  private:
-  uint64_t index_;
-
   LimitTree buy_tree_;
   LimitTree sell_tree_;
 

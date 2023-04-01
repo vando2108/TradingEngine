@@ -2,15 +2,17 @@
 #ifndef ORDERBOOK_SRC_ORDER_RECORD_H_
 #define ORDERBOOK_SRC_ORDER_RECORD_H_
 
-#include "../../include/order/orderbook_entry.hpp"
+#include "../include/orderbook_entry.hpp"
 #include <memory>
 
 namespace Orderbook {
 OrderbookEntry::OrderbookEntry(const std::shared_ptr<LimitOrder>& order)
   : order_(order) {}
 
+OrderbookEntry::~OrderbookEntry() {}
+
 ListOrderbookEntry::ListOrderbookEntry()
-  : head_(nullptr), tail_(nullptr), size_(0) {}
+  : size_(0), head_(nullptr), tail_(nullptr) {}
 
 ListOrderbookEntry::~ListOrderbookEntry() {}
 

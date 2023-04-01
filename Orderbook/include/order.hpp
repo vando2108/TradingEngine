@@ -8,6 +8,11 @@
 
 namespace Orderbook {
 
+enum Side {
+  Bid,
+  Ask
+};
+
 enum OrderType {
   LIMIT_ORDER,
   MARKET_ORDER,
@@ -17,8 +22,9 @@ enum OrderType {
 class IOrder {
  public:
   explicit IOrder(std::string_view);
+  virtual ~IOrder() = 0;
 
-  virtual inline OrderType GetType() = 0;
+  virtual inline OrderType type() = 0;
 
  public:
   inline const uint64_t& id() const {

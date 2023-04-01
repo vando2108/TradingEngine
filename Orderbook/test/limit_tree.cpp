@@ -1,13 +1,32 @@
 // Copyright [2023] <Kdimo>
-#include <cstdio>
+#include <iostream>
 #include <memory>
 #include <vector>
-#include <ctime>
-#include <iostream>
+#include <string>
+
+#include "../include/limit.hpp"
+#include "../include/limit_order.hpp"
 
 int main() {
-  std::time_t t = std::time(0);
-  std::cout << t;
+  const std::string_view user_id = "user1";
+  std::vector<uint64_t> prices = {44, 17, 62, 32, 50, 78, 48, 54, 88};
+  Orderbook::LimitTree limit_tree;
+
+  for (auto price : prices) {
+    std::shared_ptr<Orderbook::LimitOrder> order(
+        new Orderbook::LimitOrder(user_id, Orderbook::Side::Ask, price, 0));
+
+    auto entry = std::make_shared<Orderbook::OrderbookEntry>(order);
+    limit_tree.Insert(entry);
+  }
+
+  printf("-----------------\n");
+  limit_tree.Traverse();
+  printf("-----------------\n");
+  limit_tree.Remove(32);
+  printf("-----------------\n");
+  limit_tree.Traverse();
+  printf("-----------------\n");
 
   return 0;
 }
