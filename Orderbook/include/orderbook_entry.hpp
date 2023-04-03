@@ -1,10 +1,9 @@
 // Copyright [2023] <Kdimo>
-#ifndef ORDERBOOK_INCLUDE_ORDER_RECORD_H_
-#define ORDERBOOK_INCLUDE_ORDER_RECORD_H_
+#ifndef ORDERBOOK_INCLUDE_ORDERBOOKENTRY_H_
+#define ORDERBOOK_INCLUDE_ORDERBOOKENTRY_H_
 
-#include <cstdint>
 #include <memory>
-#include <string_view>
+#include <string>
 #include <unordered_map>
 
 #include "./order.hpp"

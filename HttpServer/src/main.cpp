@@ -1,6 +1,7 @@
 // Copyright [2023] <Kdimo>
 #include "../include/util/util.h"
 #include "../include/http/http-server.h"
+#include <glob/logging.h>
 
 int main(int argc, char* argv[]) {
   Http::HttpServer server("127.0.0.1", 3000);

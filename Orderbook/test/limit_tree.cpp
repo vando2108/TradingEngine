@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#include <glog/logging.h>
+
 #include "../include/limit.hpp"
 #include "../include/limit_order.hpp"
 
@@ -20,13 +22,7 @@ int main() {
     limit_tree.Insert(entry);
   }
 
-  printf("-----------------\n");
-  limit_tree.Traverse();
-  printf("-----------------\n");
   limit_tree.Remove(32);
-  printf("-----------------\n");
-  limit_tree.Traverse();
-  printf("-----------------\n");
 
   return 0;
 }

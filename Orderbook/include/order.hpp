@@ -1,6 +1,6 @@
 // Copyright [2023] <Kdimo>
-#ifndef ORDERBOOK_INCLUDE_ORDER_ORDER_H_
-#define ORDERBOOK_INCLUDE_ORDER_ORDER_H_
+#ifndef ORDERBOOK_INCLUDE_ORDER_H_
+#define ORDERBOOK_INCLUDE_ORDER_H_
 
 #include <iostream>
 #include <string>

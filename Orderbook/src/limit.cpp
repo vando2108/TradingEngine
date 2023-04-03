@@ -2,14 +2,12 @@
 #ifndef ORDERBOOK_SRC_LIMIT_H_
 #define ORDERBOOK_SRC_LIMIT_H_
 
-#include <cstdio>
 #include <memory>
-#include <algorithm>
-#include <inttypes.h>
-#include <iostream>
 #include <unordered_map>
 
 #include "../include/limit.hpp"
+
+#include <glog/logging.h>
 
 namespace Orderbook {
 
@@ -27,29 +25,31 @@ Limit::Limit(
 
 void Limit::log(std::string_view label) {
   if (label != "") {
-    std::cerr << label << '\n';
+    DLOG(INFO) << label;
   }
 
-  printf("-> cur %" PRIu64 "\n", limit_price_);
+  DLOG(INFO) << "value -> " << limit_price_;
   auto parent = parent_.lock();
   if (parent) {
-    printf("-> parent %" PRIu64 "\n", parent->limit_price_);
+    DLOG(INFO) << "parent -> " << parent->limit_price_;
   } else {
-    printf("-> parent is null\n");
+    DLOG(INFO) << "parent -> null";
   }
 
   if (left_child_) {
-    printf("-> left %" PRIu64 "\n", left_child_->limit_price_);
+    DLOG(INFO) << "left child -> " << left_child_->limit_price_;
   } else {
     printf("-> left is null\n");
+    DLOG(INFO) << "left child -> null";
   }
 
   if (right_child_) {
-    printf("-> right %" PRIu64 "\n", right_child_->limit_price_);
+    DLOG(INFO) << "right child -> " << right_child_->limit_price_;
   } else {
-    printf("-> right is null\n");
+    DLOG(INFO) << "right child -> null";
   }
-  printf("-> height %d\n\n", height_);
+
+  DLOG(INFO) << "height -> " << height_;
 }
 
 void LimitTree::swap_node(
@@ -64,8 +64,8 @@ void LimitTree::swap_node(
   node_map_[b->limit_price_] = b;
 }
 
-LimitTree::LimitTree()
-  : root_(nullptr), lowest_(nullptr), highest_(nullptr) {}
+LimitTree::LimitTree(bool debug)
+  : debug_(debug), root_(nullptr), lowest_(nullptr), highest_(nullptr) {}
 
 LimitTree::~LimitTree() {}
 
@@ -79,6 +79,14 @@ bool LimitTree::Remove(uint64_t limit) {
     return false;
   }
   remove(it->second);
+
+  if (node_ref_map_[limit].expired()) {
+    LOG(INFO) << "Remove limit price from limit tree -> " << limit;
+  } else {
+    LOG(FATAL) << "Memory leak when remove limit "
+      << limit << " from limit tree";
+  }
+
   return true;
 }
 
@@ -136,6 +144,7 @@ void LimitTree::insert(
   if (root == nullptr) {
     root = std::make_shared<Limit>(parent, entry);
     node_map_[entry->order()->limit()] = root;
+    node_ref_map_[entry->order()->limit()] = root;
 
     if (highest_ == nullptr
       || entry->order()->limit() > highest_->limit_price_) {

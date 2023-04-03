@@ -2,10 +2,8 @@
 #ifndef ORDERBOOK_INCLUDE_LIMIT_H_
 #define ORDERBOOK_INCLUDE_LIMIT_H_
 
-#include <cstdint>
 #include <memory>
 #include <unordered_map>
-#include <inttypes.h>
 
 #include "./orderbook_entry.hpp"
 
@@ -35,7 +33,7 @@ class Limit {
 
 class LimitTree {
  public:
-  LimitTree();
+  explicit LimitTree(bool debug = false);
   ~LimitTree();
 
  public:
@@ -79,6 +77,9 @@ class LimitTree {
   void update_lowest();
 
  private:
+  const bool debug_;
+  std::unordered_map<uint64_t, std::weak_ptr<Limit>> node_ref_map_;
+
   std::shared_ptr<Limit> root_;
   std::unordered_map<uint64_t, std::shared_ptr<Limit>> node_map_;
 

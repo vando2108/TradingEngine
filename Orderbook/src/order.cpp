@@ -1,6 +1,6 @@
 // Copyright [2023] <Kdimo>
-#ifndef ORDERBOOK_SRC_ORDER_ORDER_H_
-#define ORDERBOOK_SRC_ORDER_ORDER_H_
+#ifndef ORDERBOOK_SRC_ORDER_H_
+#define ORDERBOOK_SRC_ORDER_H_
 
 #include "../include/order.hpp"
 #include <ctime>

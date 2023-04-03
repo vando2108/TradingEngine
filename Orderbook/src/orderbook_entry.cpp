@@ -3,6 +3,7 @@
 #define ORDERBOOK_SRC_ORDER_RECORD_H_
 
 #include "../include/orderbook_entry.hpp"
+
 #include <memory>
 
 namespace Orderbook {
